@@ -132,6 +132,12 @@ try_wget() {
   fi
 }
 
+my_download() {
+    #file = https://gh.api.99988866.xyz/https://github.com/junegunn/fzf/releases/download/0.45.0/fzf-0.45.0-linux_amd64.tar.gz
+    #wget $file | xargs -i tar zxf {}
+    tar zxf $fzf_base/fzf-0.45.0-linux_amd64.tar.gz -C $fzf_base/bin
+}
+
 download() {
   echo "Downloading bin/fzf ..."
   if [ -x "$fzf_base"/bin/fzf ]; then
@@ -148,7 +154,8 @@ download() {
   local url
   url=https://github.com/junegunn/fzf/releases/download/$version/${1}
   set -o pipefail
-  if ! (try_curl $url || try_wget $url); then
+  #if ! (my_download $1 || try_curl $url || try_wget $url); then
+  if ! my_download; then
     set +o pipefail
     binary_error="Failed to download with curl and wget"
     return
